@@ -1,0 +1,62 @@
+﻿body {
+    
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+#card {
+    width: 400px;
+    height: 400px;
+    background-color: darkorange;
+}
+.timelinecontainer{
+    height: 90%;
+    width: 100%;
+}
+.timelineblock {
+    width: 50%;
+    margin: 0 auto;
+}
+.timelineline {
+    height: 100%;
+    width: 2%;
+    background-color: darkgray;
+    margin: 0 auto;
+    transition: width 0.15s;
+}
+.yearblock {
+    height: 4%;
+    width: 8%;
+    background-color: darkorange;
+    border-radius: 2px;
+    margin: 0 auto;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+}
+.hoverline {
+    width: 4%;
+}
+.display {
+    height: 100vh;
+    width: 30vw;
+    float: left;
+}
+
+.playerheader {
+    background-color: burlywood;
+    height: 10%;
+    width: 100%;
+}
+
