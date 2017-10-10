@@ -10,10 +10,11 @@ using System.Web.Http;
 
 namespace Nardada.Controllers
 {
+
     [RoutePrefix("api")]
     public class MyApiController : ApiController
     {
-
+        
         //Create new DB
         [Route("createdb"), HttpGet]
         public void CreateDB()
