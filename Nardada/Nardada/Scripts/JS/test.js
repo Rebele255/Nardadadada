@@ -26,3 +26,7 @@ $(".timelinecontainer").ready(function () {
     $(".timelinecontainer").append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\"></div> </div> `);
 
 })
+$("body").on("click", ".timelineblock", function () {
+    let test = $(this).prev().text();
+    console.log(test);
+})
