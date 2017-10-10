@@ -23,17 +23,24 @@ namespace Nardada.Controllers
             export.Create(true, true);
         }
 
+        //Drop DB
+        [Route("dropdb"), HttpGet]
+        public void DropDB()
+        {
+            var cfg = DbService.Configure();
+            var export = new SchemaExport(cfg);
+            export.Drop(true, true);
+        }
+
         [Route("getquestions"), HttpGet]
         public IHttpActionResult GetQuestionsFromDB()
         {
             var sesh = DbService.OpenSession();
-            var questionList = new List<QuestionCard>();
-            questionList = sesh.Query<QuestionCard>().ToList();
+            var questionList = sesh.Query<QuestionCard>();
+            var rebecca = questionList.Select(x => new { x.Year, x.Question, x.Category.Name  }).ToList();
             DbService.CloseSession(sesh);
 
-            var hej = questionList[0].Year;
-
-            return Ok(questionList[0]);
+            return Ok(rebecca);
         }
     }
 }

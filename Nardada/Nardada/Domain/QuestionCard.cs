@@ -10,7 +10,7 @@ namespace Nardada.Domain
         public virtual Guid Id { get; set; }
         public virtual string Question { get; set; }
         public virtual int Year { get; set; }
-        public virtual Category QuestionCategory { get; set; }
+        public virtual Category Category { get; set; }
 
     }
 }
