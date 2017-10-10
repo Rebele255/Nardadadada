@@ -52,6 +52,13 @@ namespace Nardada.Mapping
                 e.Property(p => p.Question);
                 e.Property(p => p.Year);
 
+                e.ManyToOne(p => p.Category, mapper =>
+                {
+                    mapper.Column("CategoryId");
+                    mapper.NotNullable(true);
+                    mapper.Cascade(Cascade.None);
+                });
+
                 //e.Set(x => x.Substantives, collectionMapping =>
                 //{
                 //    // Inverse true måste vara på ena sidan (men inte den andra). Det spelar ingen roll vilken sida du väljer.
@@ -86,7 +93,7 @@ namespace Nardada.Mapping
                 {
                     p.Inverse(true);
                     p.Cascade(Cascade.All);
-                    p.Key(k => k.Column(col => col.Name("QuestionCategory")));
+                    p.Key(k => k.Column(col => col.Name("CategoryId")));
                 }, p => p.OneToMany());
 
                 //// Många-till-många-relation mellan BlogPost och Tag. (Det behövs en ManyToMany på andra sidan också)
