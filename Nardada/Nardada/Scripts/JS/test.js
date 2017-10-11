@@ -1,6 +1,7 @@
 ﻿var cardDeck;
+var winlimit = 3; //skall senare regleras av spelarna i settings vid början av spelet
 var testList = [2000, 1995, 1980, 1900, 1904]
-var player1 = [2000, 1995];
+var player1 = [1970];
 var player2 = [1980, 1900, 1904, 2012, 1977, 1988, 1954];
 var players = [player1, player2];
 
@@ -57,7 +58,7 @@ $("body").on("click", ".timelineblock", function () {
     let yearAfter = $(this).next().text();
     console.log(yearBefore);
     console.log(yearAfter);
-    if (cardDeck[0].Year >= yearBefore && cardDeck[0].Year <= yearAfter) {
+    if (cardDeck[0].Year >= yearBefore && (cardDeck[0].Year <= yearAfter || yearAfter == "")) {
         console.log('yes det var rätt!');
         showCorrectCard();
         addYearToList();
@@ -109,3 +110,12 @@ function showNewCard() {
     $(".cardContent").append(`<div id="categoryHeader">${cardDeck[0].Name}</div><div id="questionArea">${cardDeck[0].Question}</div>`);
 }
 
+function checkIfWon(player) { //behövs paraneter??
+    if (player.length >= winLimit) {
+        console.log('du har vunnit spelet!');
+        return true;
+    } else {
+        console.log('spelaren har ännu inte vunnit, fortsätt med nytt kort');
+        return false;
+    }
+}
