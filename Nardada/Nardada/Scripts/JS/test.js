@@ -1,5 +1,5 @@
 ﻿var cardDeck;
-var winlimit = 3; //skall senare regleras av spelarna i settings vid början av spelet
+var winLimit = 3; //skall senare regleras av spelarna i settings vid början av spelet
 var player1 = [];
 var player2 = [];
 var players = [player1, player2];
@@ -80,7 +80,7 @@ $("body").on("click", ".timelineblock", function () {
     if (cardDeck[0].Year >= yearBefore && (cardDeck[0].Year <= yearAfter || yearAfter == "")) {
         showCorrectCard();
         addYearToList(cardDeck[0].Year);
-        checkIfWon(players[currentplayer]);
+        checkIfWon(players[currentPlayer]);
         drawTimeline(players[currentPlayer], currentPlayer);
     } else {
         showWrongCard();
@@ -132,28 +132,30 @@ $('body').on("click", ".answer", function () {
 function showNewCard() {
     $('.card').removeClass('answer');
     $(".cardContent").empty();
-    let color = getCardColor();
+    //let color = getCardColor();
+    let color = cardDeck[0].Color;
     $(".cardContent").css("background-color", color);
     $(".card").css("border-color", color)
 
     $(".cardContent").append(`<div id="categoryHeader">${cardDeck[0].Name}</div><div id="questionArea">${cardDeck[0].Question}</div>`);
 }
 
-function getCardColor() {
-    switch (cardDeck[0].Name) {
-        case "Underhållning":
-            return "purple";
+//function getCardColor() {
+//    switch (cardDeck[0].Name) {
+//        case "Underhållning":
+//            return "purple";
 
-        case "Kända personer och händelser":
-            return "darkorange";
+//        case "Kända personer och händelser":
+//            return "darkorange";
 
-        case "Prylar, nyheter och uppfinningar":
-            return "lightseagreen";
+//        case "Prylar, nyheter och uppfinningar":
+//            return "lightseagreen";
 
-        default:
-            return "";
-    }
-}
+//        default:
+//            return "";
+//    }
+//}
+
 function changePlayer() {
     currentPlayer = (currentPlayer + 1) % players.length;
     $('.timelinecontainer').addClass('disablePlayer');

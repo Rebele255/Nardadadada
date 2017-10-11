@@ -38,7 +38,7 @@ namespace Nardada.Controllers
         {
             var sesh = DbService.OpenSession();
             var questionList = sesh.Query<QuestionCard>();
-            var rebecca = questionList.Select(x => new { x.Year, x.Question, x.Category.Name  }).ToList();
+            var rebecca = questionList.Select(x => new { x.Year, x.Question, x.Category.Name, x.Category.Color}).ToList();
             DbService.CloseSession(sesh);
 
             return Ok(rebecca);
