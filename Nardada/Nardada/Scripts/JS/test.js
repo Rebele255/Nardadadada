@@ -4,6 +4,11 @@ var testList = [2000, 1995, 1980, 1900, 1904]
 var player1 = [];
 var player2 = [];
 var players = [player1, player2];
+var currentPlayer = 0;
+
+function changePlayer() {
+    currentPlayer = (currentPlayer + 1) % players.length;
+}
 
 $(document).ready(function () {
     player1.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
