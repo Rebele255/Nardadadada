@@ -60,3 +60,8 @@ textarea {
     width: 100%;
 }
 
+.disablePlayer {
+    pointer-events: none;
+    opacity: 0.4;
+}
+

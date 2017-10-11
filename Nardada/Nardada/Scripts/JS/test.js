@@ -7,12 +7,19 @@ var players = [player1, player2];
 var currentPlayer = 0;
 
 function changePlayer() {
+    console.log(currentPlayer)
     currentPlayer = (currentPlayer + 1) % players.length;
+    console.log(currentPlayer)
+    $('.timelinecontainer').addClass('disablePlayer');
+    $(`#player${currentPlayer}`).removeClass('disablePlayer');
 }
 
 $(document).ready(function () {
     player1.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
     player2.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
+
+    $('.timelinecontainer').addClass('disablePlayer');
+    $(`#player${currentPlayer}`).removeClass('disablePlayer');
 
     getCardDeckFromDB();
     let nr = 0;
@@ -32,6 +39,7 @@ function getCardDeckFromDB() {
         .done(function (response) {
             console.log("response", response)
             cardDeck = response;
+            _.shuffle(cardDeck);
             console.log(cardDeck);
             showNewCard(); //vill inte ha den här, men behöver vänta på cardDeck laddas in...
         })
@@ -69,8 +77,8 @@ $("body").on("click", ".timelineblock", function () {
     if (cardDeck[0].Year >= yearBefore && (cardDeck[0].Year <= yearAfter || yearAfter == "")) {
         console.log('yes det var rätt!');
         showCorrectCard();
-        addYearToList(cardDeck[0].Year);
-        drawTimeline(players[currentPlayer], currentPlayer);
+        addYearToList();
+        drawTimeline();
     } else {
         console.log('nej det blev fel');
         showWrongCard();
@@ -124,7 +132,7 @@ function showNewCard() {
     $(".cardContent").append(`<div id="categoryHeader">${cardDeck[0].Name}</div><div id="questionArea">${cardDeck[0].Question}</div>`);
 }
 
-function checkIfWon(player) { //behövs paraneter??
+function checkIfWon(player) { //behövs paraneter?? eller kolla från currentPlayer
     if (player.length >= winLimit) {
         console.log('du har vunnit spelet!');
         return true;
