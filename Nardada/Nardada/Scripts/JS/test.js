@@ -1,10 +1,13 @@
 ﻿var cardDeck;
 var testList = [2000, 1995, 1980, 1900, 1904]
-var player1 = [2000, 1995];
-var player2 = [1980, 1900, 1904, 2012, 1977, 1988, 1954];
+var player1 = [];
+var player2 = [];
 var players = [player1, player2];
 
 $(document).ready(function () {
+    player1.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
+    player2.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
+
     getCardDeckFromDB();
     let nr = 0;
     console.log(players)
@@ -57,7 +60,7 @@ $("body").on("click", ".timelineblock", function () {
     let yearAfter = $(this).next().text();
     console.log(yearBefore);
     console.log(yearAfter);
-    if (cardDeck[0].Year >= yearBefore && cardDeck[0].Year <= yearAfter) {
+    if (cardDeck[0].Year >= yearBefore && (cardDeck[0].Year <= yearAfter || yearAfter =="")) {
         console.log('yes det var rätt!');
         showCorrectCard();
         addYearToList();
