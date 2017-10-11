@@ -66,17 +66,19 @@ $("body").on("click", ".timelineblock", function () {
     let yearAfter = $(this).next().text();
     console.log(yearBefore);
     console.log(yearAfter);
-    if (cardDeck[0].Year >= yearBefore && cardDeck[0].Year <= yearAfter) {
+    if (cardDeck[0].Year >= yearBefore && (cardDeck[0].Year <= yearAfter || yearAfter == "")) {
         console.log('yes det var rätt!');
         showCorrectCard();
-        addYearToList();
-        drawTimeline();
+        addYearToList(cardDeck[0].Year);
+        drawTimeline(players[currentPlayer], currentPlayer);
     } else {
         console.log('nej det blev fel');
         showWrongCard();
     }
     //getCardFromDB()
-    //showNewCard()
+    cardDeck.shift();
+    showNewCard();
+    changePlayer();
 })
 
 function showCorrectCard() {
@@ -99,8 +101,11 @@ function showWrongCard() {
             <div id="correctYear">${cardDeck[0].Year}</div>`);
 }
 
-function addYearToList() {
+function addYearToList(year) {
     console.log('Nu läggs det rätta kortet till i listan');
+    players[currentPlayer].push(year);
+    console.log(players[currentPlayer]);
+
 }
 
 function drawTimeline(player, nr) {
@@ -112,6 +117,7 @@ function drawTimeline(player, nr) {
     }
     $(`#player${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\"></div> </div> `);
 }
+
 
 function showNewCard() {
     $(".cardContent").empty();
