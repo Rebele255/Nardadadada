@@ -33,7 +33,12 @@
     color: white;
     font-weight: bold;
 }
+.answer{
+    cursor: pointer;
+}
+.wrong{
 
+}
 #questionArea {
     /*margin: 2% 4%;*/
     /*text-align: center;*/
@@ -50,11 +55,9 @@
     font-size: 10px;
 }
 
-.answer {
-    /*text-align: center;*/
+.rightorwrong {
     text-transform: uppercase;
-    /*margin: 2% 5%;
-    margin-top: 8%;*/
+    
     padding: 7%;
     color: white;
     font-weight: bold;

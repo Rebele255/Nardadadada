@@ -12,6 +12,7 @@ function changePlayer() {
     console.log(currentPlayer)
     $('.timelinecontainer').addClass('disablePlayer');
     $(`#player${currentPlayer}`).removeClass('disablePlayer');
+    $(`#player${currentPlayer}`).css('pointer-events', 'all');
 }
 
 $(document).ready(function () {
@@ -70,6 +71,7 @@ function getSortList() {
 //$(".timelinecontainer").ready(drawTimeline())
 
 $("body").on("click", ".timelineblock", function () {
+    $(this).parent().css("pointer-events", "none");
     let yearBefore = $(this).prev().text();
     let yearAfter = $(this).next().text();
     console.log(yearBefore);
@@ -83,28 +85,44 @@ $("body").on("click", ".timelineblock", function () {
         console.log('nej det blev fel');
         showWrongCard();
     }
+
     //getCardFromDB()
+    //cardDeck.shift();
+    //showNewCard();
+    //changePlayer();
+})
+
+$('body').on("click", ".answer", function () {
     cardDeck.shift();
     showNewCard();
     changePlayer();
 })
 
+//$('.card answer').click(function () {
+//    console.log('hej')
+//    cardDeck.shift();
+//    showNewCard();
+//    changePlayer();
+//})
+
 function showCorrectCard() {
+    $('.card').addClass('answer');
     console.log('Nu visas det korrekta kortet (grönt)');
     $('.cardContent').empty();
-    $('.cardContent').addClass('rightGreen');
+    $('.cardContent').css('background-color', 'yellowgreen');
     $('.cardContent').append(`
-            <div class="answer">Rätt</div>
+            <div class="rightorwrong">Rätt</div>
             <div id="aretVar">Året var</div>
             <div id="correctYear">${cardDeck[0].Year}</div>`);
 }
 
 function showWrongCard() {
+    $('.card').addClass('answer');
     console.log('Nu visas det felaktiga kortet (rött)');
     $('.cardContent').empty();
-    $('.cardContent').addClass('wrongRed');
+    $('.cardContent').css('background-color', 'red');
     $('.cardContent').append(`
-            <div class="answer">Fel</div>
+            <div class="rightorwrong">Fel</div>
             <div id="aretVar">Året var</div>
             <div id="correctYear">${cardDeck[0].Year}</div>`);
 }
@@ -128,6 +146,7 @@ function drawTimeline(player, nr) {
 
 
 function showNewCard() {
+    $('.card').removeClass('answer');
     $(".cardContent").empty();
     let color = getCardColor();
     $(".cardContent").css("background-color", color);
