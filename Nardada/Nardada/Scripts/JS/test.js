@@ -1,36 +1,33 @@
 ﻿var cardDeck;
 var winlimit = 3; //skall senare regleras av spelarna i settings vid början av spelet
-var testList = [2000, 1995, 1980, 1900, 1904]
 var player1 = [];
 var player2 = [];
 var players = [player1, player2];
 var currentPlayer = 0;
 
-function changePlayer() {
-    console.log(currentPlayer)
-    currentPlayer = (currentPlayer + 1) % players.length;
-    console.log(currentPlayer)
-    $('.timelinecontainer').addClass('disablePlayer');
-    $(`#player${currentPlayer}`).removeClass('disablePlayer');
-    $(`#player${currentPlayer}`).css('pointer-events', 'all');
-}
-
+//startar spelet och laddar in det som beövs för att spela
 $(document).ready(function () {
-    player1.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
-    player2.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
-
-    $('.timelinecontainer').addClass('disablePlayer');
-    $(`#player${currentPlayer}`).removeClass('disablePlayer');
-
+    getStartYearForPlayers();
+    enableCurrentPlayer();
+    //hämtar kortlek från db. visar även första kortet pga laddtid (vill egentligen inte ha visa kortet i denna funktion)
     getCardDeckFromDB();
+    //här ska showNewCard ligga egentligen
+
     let nr = 0;
-    console.log(players)
-    console.log(nr)
     players.forEach(function (player) {
         drawTimeline(player, nr)
         nr++; 
     });
-}) //egentligen när spelet laddas in
+})
+
+function getStartYearForPlayers() {
+player1.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
+player2.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
+}
+function enableCurrentPlayer() {
+    $('.timelinecontainer').addClass('disablePlayer');
+    $(`#player${currentPlayer}`).removeClass('disablePlayer');
+}
 
 function getCardDeckFromDB() {
     $.ajax({
@@ -38,10 +35,8 @@ function getCardDeckFromDB() {
         method: 'GET'
     })
         .done(function (response) {
-            console.log("response", response)
             cardDeck = response;
             cardDeck = _.shuffle(cardDeck);
-            console.log(cardDeck);
             showNewCard(); //vill inte ha den här, men behöver vänta på cardDeck laddas in...
         })
         .fail(function (xhr, status, error) {
@@ -49,7 +44,17 @@ function getCardDeckFromDB() {
         })
 }
 
-
+//denna funktion skriver ut tidslinjerna
+function drawTimeline(player, nr) {
+    //tömmer vyn för timeline innan den målas om
+    $(`#player${nr}`).empty(); 
+    let sortedList = player.sort();
+    let height = heightCalculation(player);
+    for (var i = 0; i < player.length; i++) {
+        $(`#player${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\"></div> </div> <div class=\"yearblock\">${sortedList[i]}</div>`);
+    }
+    $(`#player${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\"></div> </div> `);
+}
 
 function heightCalculation(list) {
     let height = (100 - (list.length * 4)) / (list.length + 1);
@@ -63,88 +68,67 @@ $("body").on("mouseleave", ".timelineblock", function () {
     $(this).children().toggleClass('hoverline');
 })
 
-function getSortList() {
-    let sortedList = testList.sort();
-    return sortedList;
-}
-
-//$(".timelinecontainer").ready(drawTimeline())
-
+//nu har tidslinjerna ritats upp, ett kort visats och man ska trycka på tidslinjen för att svara
 $("body").on("click", ".timelineblock", function () {
+    
     $(this).parent().css("pointer-events", "none");
+    //här tar vi in svaret från spelaren
     let yearBefore = $(this).prev().text();
     let yearAfter = $(this).next().text();
-    console.log(yearBefore);
-    console.log(yearAfter);
+
+    //här kontrollerar vi om svaret är rätt
     if (cardDeck[0].Year >= yearBefore && (cardDeck[0].Year <= yearAfter || yearAfter == "")) {
-        console.log('yes det var rätt!');
         showCorrectCard();
         addYearToList(cardDeck[0].Year);
+        checkIfWon(players[currentplayer]);
         drawTimeline(players[currentPlayer], currentPlayer);
     } else {
-        console.log('nej det blev fel');
         showWrongCard();
     }
-
-    //getCardFromDB()
-    //cardDeck.shift();
-    //showNewCard();
-    //changePlayer();
 })
-
-$('body').on("click", ".answer", function () {
-    cardDeck.shift();
-    showNewCard();
-    changePlayer();
-})
-
-//$('.card answer').click(function () {
-//    console.log('hej')
-//    cardDeck.shift();
-//    showNewCard();
-//    changePlayer();
-//})
-
-function showCorrectCard() {
-    $('.card').addClass('answer');
-    console.log('Nu visas det korrekta kortet (grönt)');
-    $('.cardContent').empty();
-    $('.cardContent').css('background-color', 'yellowgreen');
-    $('.cardContent').append(`
-            <div class="rightorwrong">Rätt</div>
-            <div id="aretVar">Året var</div>
-            <div id="correctYear">${cardDeck[0].Year}</div>`);
-}
 
 function showWrongCard() {
     $('.card').addClass('answer');
-    console.log('Nu visas det felaktiga kortet (rött)');
     $('.cardContent').empty();
     $('.cardContent').css('background-color', 'red');
+    $('.card').css('border-color', 'red')
     $('.cardContent').append(`
             <div class="rightorwrong">Fel</div>
             <div id="aretVar">Året var</div>
             <div id="correctYear">${cardDeck[0].Year}</div>`);
 }
 
+function showCorrectCard() {
+    $('.card').addClass('answer');
+    $('.cardContent').empty();
+    $('.cardContent').css('background-color', 'yellowgreen');
+    $('.card').css('border-color', 'yellowgreen')
+    $('.cardContent').append(`
+            <div class="rightorwrong">Rätt</div>
+            <div id="aretVar">Året var</div>
+            <div id="correctYear">${cardDeck[0].Year}</div>`);
+}
+
 function addYearToList(year) {
-    console.log('Nu läggs det rätta kortet till i listan');
     players[currentPlayer].push(year);
-    console.log(players[currentPlayer]);
-
 }
 
-function drawTimeline(player, nr) {
-    $(`#player${nr}`).empty(); //tömmer vyn för timeline innan den målas om
-    let sortedList = player.sort();
-    let height = heightCalculation(player);
-    for (var i = 0; i < player.length; i++) {
-        $(`#player${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\"></div> </div> <div class=\"yearblock\">${sortedList[i]}</div>`);
+function checkIfWon(player) { 
+    if (player.length >= winLimit) {
+        console.log('du har vunnit spelet!');
+        return true;
+    } else {
+        console.log('spelaren har ännu inte vunnit, fortsätt med nytt kort');
+        return false;
     }
-    $(`#player${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\"></div> </div> `);
 }
 
-
+$('body').on("click", ".answer", function () {
+    //ta bort översta kortet i frågeleken
+    cardDeck.shift();
+    showNewCard();
+    changePlayer();
+})
 function showNewCard() {
     $('.card').removeClass('answer');
     $(".cardContent").empty();
@@ -158,7 +142,7 @@ function showNewCard() {
 function getCardColor() {
     switch (cardDeck[0].Name) {
         case "Underhållning":
-            return "pink";
+            return "purple";
 
         case "Kända personer och händelser":
             return "darkorange";
@@ -170,13 +154,10 @@ function getCardColor() {
             return "";
     }
 }
-
-function checkIfWon(player) { //behövs paraneter?? eller kolla från currentPlayer
-    if (player.length >= winLimit) {
-        console.log('du har vunnit spelet!');
-        return true;
-    } else {
-        console.log('spelaren har ännu inte vunnit, fortsätt med nytt kort');
-        return false;
-    }
+function changePlayer() {
+    currentPlayer = (currentPlayer + 1) % players.length;
+    $('.timelinecontainer').addClass('disablePlayer');
+    $(`#player${currentPlayer}`).removeClass('disablePlayer');
+    $(`#player${currentPlayer}`).css('pointer-events', 'all');
 }
+

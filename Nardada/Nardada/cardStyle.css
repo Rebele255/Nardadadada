@@ -12,7 +12,7 @@
     height: 42%;
     width: 50%;
     background-color: white;
-    border: 2px solid yellowgreen;
+    border: 2px solid;
     border-radius: 6%;
     position: relative;
 }
@@ -20,28 +20,20 @@
 .cardContent {
     height: 66%;
     width: 100%;
-    margin: 20% 0;
-    background-color: yellowgreen;
+    margin: 25% 0;
 } 
 
 #categoryHeader {
-    /*text-align: center;*/
     text-transform: uppercase;
     padding: 7%;
-    /*margin: 2% 5%;
-    margin-top: 8%;*/
     color: white;
     font-weight: bold;
 }
 .answer{
     cursor: pointer;
 }
-.wrong{
 
-}
 #questionArea {
-    /*margin: 2% 4%;*/
-    /*text-align: center;*/
     padding: 7%;
     color: white;
 }
@@ -57,7 +49,6 @@
 
 .rightorwrong {
     text-transform: uppercase;
-    
     padding: 7%;
     color: white;
     font-weight: bold;
@@ -79,11 +70,4 @@
     padding: 7%;
 }
 
-.rightGreen {
-    background-color: yellowgreen;
-}
-
-.wrongRed {
-    background-color: red;
-}
 

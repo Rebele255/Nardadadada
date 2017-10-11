@@ -14,11 +14,7 @@ select,
 textarea {
     max-width: 280px;
 }
-#card {
-    width: 400px;
-    height: 400px;
-    background-color: darkorange;
-}
+
 .timelinecontainer{
     height: 90%;
     width: 100%;
