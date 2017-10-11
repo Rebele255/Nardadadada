@@ -77,8 +77,8 @@ $("body").on("click", ".timelineblock", function () {
     if (cardDeck[0].Year >= yearBefore && (cardDeck[0].Year <= yearAfter || yearAfter == "")) {
         console.log('yes det var rätt!');
         showCorrectCard();
-        addYearToList();
-        drawTimeline();
+        addYearToList(cardDeck[0].Year);
+        drawTimeline(players[currentPlayer], currentPlayer);
     } else {
         console.log('nej det blev fel');
         showWrongCard();
