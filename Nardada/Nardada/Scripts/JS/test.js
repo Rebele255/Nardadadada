@@ -39,7 +39,7 @@ function getCardDeckFromDB() {
         .done(function (response) {
             console.log("response", response)
             cardDeck = response;
-            _.shuffle(cardDeck);
+            cardDeck = _.shuffle(cardDeck);
             console.log(cardDeck);
             showNewCard(); //vill inte ha den här, men behöver vänta på cardDeck laddas in...
         })
@@ -129,7 +129,27 @@ function drawTimeline(player, nr) {
 
 function showNewCard() {
     $(".cardContent").empty();
+    let color = getCardColor();
+    $(".cardContent").css("background-color", color);
+    $(".card").css("border-color", color)
+
     $(".cardContent").append(`<div id="categoryHeader">${cardDeck[0].Name}</div><div id="questionArea">${cardDeck[0].Question}</div>`);
+}
+
+function getCardColor() {
+    switch (cardDeck[0].Name) {
+        case "Underhållning":
+            return "pink";
+
+        case "Kända personer och händelser":
+            return "darkorange";
+
+        case "Prylar, nyheter och uppfinningar":
+            return "lightseagreen";
+
+        default:
+            return "";
+    }
 }
 
 function checkIfWon(player) { //behövs paraneter?? eller kolla från currentPlayer
