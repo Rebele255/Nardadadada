@@ -1,23 +1,37 @@
 ﻿var cardDeck;
-var winlimit = 3; //skall senare regleras av spelarna i settings vid början av spelet
+//skall senare regleras av spelarna i settings vid början av spelet
+var winLimit = 3; 
 var player1 = [];
 var player2 = [];
 var players = [player1, player2];
 var currentPlayer = 0;
+var playerName1 ='';
+var playerName2 = '';
+
+$('#startbutton').click(function () {
+    playerName1 = $('#textplayer1').val();
+    playerName2 = $('#textplayer2').val();
+    winLimit = $('#winlimittext').val();
+    console.log(playerName1, playerName2, winLimit)
+    $('#page1').hide();
+    $('#page2').show();
+})
 
 //startar spelet och laddar in det som beövs för att spela
 $(document).ready(function () {
+    console.log('page2');
     getStartYearForPlayers();
     enableCurrentPlayer();
     //hämtar kortlek från db. visar även första kortet pga laddtid (vill egentligen inte ha visa kortet i denna funktion)
     getCardDeckFromDB();
     //här ska showNewCard ligga egentligen
-
+    
     let nr = 0;
     players.forEach(function (player) {
         drawTimeline(player, nr)
         nr++; 
     });
+    console.log(playerName1, playerName2, winLimit)
 })
 
 function getStartYearForPlayers() {
@@ -80,7 +94,7 @@ $("body").on("click", ".timelineblock", function () {
     if (cardDeck[0].Year >= yearBefore && (cardDeck[0].Year <= yearAfter || yearAfter == "")) {
         showCorrectCard();
         addYearToList(cardDeck[0].Year);
-        checkIfWon(players[currentplayer]);
+        checkIfWon(players[currentPlayer]);
         drawTimeline(players[currentPlayer], currentPlayer);
     } else {
         showWrongCard();

@@ -6,6 +6,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
@@ -59,5 +60,27 @@ textarea {
 .disablePlayer {
     pointer-events: none;
     opacity: 0.4;
+}
+#settingsdisplay{
+    margin: 0 auto;
+    background-color: purple;
+    height: 100vh;
+    width: 38vw;
+}
+
+.textbox {
+    border-radius: 2px;
+    border: none;
+    margin: 4px;
+    width: 100%;
+}
+#startbutton {
+    width: 100%;
+    border-radius: 2px;
+    border: none;
+    margin: 4px;
+}
+#page2{
+    display: none;
 }
 
