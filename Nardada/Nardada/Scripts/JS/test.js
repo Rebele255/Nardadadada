@@ -106,7 +106,7 @@ $("body").on("click", ".timelineblock", function () {
             $('#page2').hide();
             $('#page3').show();
                 console.log(playerNameList[currentPlayer])
-    $('#winner').text(playerNameList[currentPlayer])
+                $('#winner').html(`<p>${playerNameList[currentPlayer]} är en riktig vinnare!</p> <p>${playerNameList[(currentPlayer+1)%playerNameList.length]} är skyldig dig ett kinderägg</p>`)
         } 
         drawTimeline(players[currentPlayer], currentPlayer);
     } else {
