@@ -18,6 +18,8 @@ $('#startbutton').click(function () {
     console.log(player1.name, player2.name, winLimit, player1.color, player2.color)
     console.log(player1);
     console.log(player2);
+    
+
     $('#page1').hide();
     $('#page2').show();
 
@@ -26,7 +28,12 @@ $('#startbutton').click(function () {
         drawTimeline(player, nr)
         nr++;
     });
-    showNewCard();
+    $(`#footer1`).css('background-color', `${player1.color}`);
+    $(`#footer2`).css('background-color', `${player2.color}`);
+    $(`#arrow1`).css('border-top', `20px solid ${player1.color}`);
+    $(`#arrow2`).css('border-top', `20px solid ${player2.color}`);
+    $(`#footer1`).text(player1.name);
+    $(`#footer2`).text(player2.name);
 })
 
 
