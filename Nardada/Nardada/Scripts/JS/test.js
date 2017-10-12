@@ -74,7 +74,7 @@ $(document).ready(function () {
 
 function prepareNewGame() {
     currentPlayer = 0;
-
+    $('#playingfield').empty();
     //töm timelines för spelarna (annars ligger förra rundans år kvar)
     players.forEach(function (player) {
         player.timeLine = [];
@@ -123,7 +123,7 @@ function getCardDeckFromDB() {
         })
 }
 function createCardDisplay() {
-    $('#page2').append(`<div class="display">
+    $('#playingfield').append(`<div class="display">
             <div class="ful"></div>
             <div class="card">
                 <div id="logoName">Nardada</div>
@@ -134,7 +134,7 @@ function createCardDisplay() {
 
 function createDisplay(player) {
     let width = displayWidthCalculation();
-    $('#page2').append(`<div class=\"display timeline\" id=\"display${player.number}\" style=\"width: ${width}vw; background-color: ${player.color}\" >
+    $('#playingfield').append(`<div class=\"display timeline\" id=\"display${player.number}\" style=\"width: ${width}vw; background-color: ${player.color}\" >
             <div class=\"timelinecontainer\" id=\"timelinecontainer${player.number}\"/>
             <div class=\"arrowcontainer\">
             <div class=\"arrow\" style=\"border-top-color: ${player.color}\"/>
