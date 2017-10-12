@@ -43,6 +43,10 @@
             </div>
         </div>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ca83e06bbdd47f96643936116e588c0348f93162
     </div>
     <div id="page2">
         <div class="display">
@@ -80,7 +84,13 @@
             </div>
             <button class="grow" id="restartbutton" value="Enter">Spela igen</button>
         </div>
-        
+        <!--<div>
+            <div id="windisplay">
+                <label id="winner">du vann</label>
+                <button id="restartbutton" value="Enter">Spela igen</button>
+                <div id="messagetouser"></div>
+            </div>
+        </div>-->
     </div>
 
     <script src="Scripts/underscore-min.js"></script>

@@ -9,6 +9,24 @@ var players = [player1, player2];
 var currentPlayer = 0;
 var playerName1 ='';
 var playerName2 = '';
+var playerNameList = [];
+
+$('#startbutton').click(function () {
+    playerName1 = $('#textplayer1').val();
+    playerName2 = $('#textplayer2').val();
+    winLimit = $('#winlimittext').val();
+    playerNameList.push(playerName1);
+    playerNameList.push(playerName2);
+    console.log(playerNameList);
+    console.log(playerName1, playerName2, winLimit)
+    $('#page1').hide();
+    $('#page2').show();
+})
+
+$('#restartbutton').click(function () {
+    $('#page3').hide();
+    $('#page1').show();
+})
 
 //startar spelet och laddar in det som beövs för att spela
 $(document).ready(function () {
@@ -120,7 +138,13 @@ $("body").on("click", ".timelineblock", function () {
     if (cardDeck[0].Year >= yearBefore && (cardDeck[0].Year <= yearAfter || yearAfter == "")) {
         showCorrectCard();
         addYearToList(cardDeck[0].Year);
-        checkIfWon(players[currentPlayer]);
+        var ifWon = checkIfWon(players[currentPlayer]);
+        if (ifWon) {
+            $('#page2').hide();
+            $('#page3').show();
+                console.log(playerNameList[currentPlayer])
+                $('#winner').html(`<p>${playerNameList[currentPlayer]} är en riktig vinnare!</p> <p>${playerNameList[(currentPlayer+1)%playerNameList.length]} är skyldig dig ett kinderägg</p>`)
+        } 
         drawTimeline(players[currentPlayer], currentPlayer);
     } else {
         showWrongCard();

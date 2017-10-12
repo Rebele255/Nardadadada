@@ -88,9 +88,7 @@ textarea {
     display: none;
 }
 
-#page3 {
-    display: none;
-}
+<<<<<<< HEAD
 .colorbox{
     height: 50px;
 }
@@ -124,5 +122,9 @@ textarea {
 .border {
     border: 2px solid;
     border-color: white;
+=======
+#page3 {
+    display: none;
+>>>>>>> ca83e06bbdd47f96643936116e588c0348f93162
 }
 
