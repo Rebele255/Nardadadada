@@ -26,18 +26,31 @@ $('#startbutton').click(function () {
         drawTimeline(player, nr)
         nr++;
     });
+    showNewCard();
 })
 
 
 //startar spelet och laddar in det som beövs för att spela
 $(document).ready(function () {
-    getStartYearForPlayers();
-    enableCurrentPlayer();
+    prepareNewGame();
     //hämtar kortlek från db. visar även första kortet pga laddtid (vill egentligen inte ha visa kortet i denna funktion)
     getCardDeckFromDB();
     //här ska showNewCard ligga egentligen
-    
 })
+
+function prepareNewGame() {
+    currentPlayer = 1;
+
+    changePlayer();
+    //changePlayer();
+
+    //töm timelines för spelarna (annars ligger förra rundans år kvar)
+    players.forEach(function (player) {
+        player.timeLine = [];
+    });
+    getStartYearForPlayers();
+    enableCurrentPlayer();
+}
 
 $('.colordot').click(function () {
     if ($(this).parent().attr("id") == "colorbox1") {
@@ -59,6 +72,7 @@ function getStartYearForPlayers() {
 player1.timeLine.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
 player2.timeLine.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
 }
+
 function enableCurrentPlayer() {
     $('.timelinecontainer').addClass('disablePlayer');
     $(`#player${currentPlayer}`).removeClass('disablePlayer');
@@ -186,13 +200,17 @@ function showNewCard() {
 
 function changePlayer() {
     currentPlayer = (currentPlayer + 1) % players.length;
+
     $('.timelinecontainer').addClass('disablePlayer');
     $(`#player${currentPlayer}`).removeClass('disablePlayer');
     $(`#player${currentPlayer}`).css('pointer-events', 'all');
+
 }
 
 $('#restartbutton').click(function () {
     $('#page3').hide();
     $('#page1').show();
+    cardDeck.shift();
+    prepareNewGame();
 })
 
