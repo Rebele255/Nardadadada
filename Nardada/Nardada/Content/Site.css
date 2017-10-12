@@ -34,7 +34,7 @@ textarea {
 .yearblock {
     height: 4%;
     width: 8%;
-    background-color: darkorange;
+    background-color: darkslategrey;
     border-radius: 2px;
     margin: 0 auto;
     color: white;
@@ -61,12 +61,16 @@ textarea {
     pointer-events: none;
     opacity: 0.4;
 }
-#settingsdisplay{
+#settingsdisplay {
     margin: 0 auto;
-    background-color: purple;
+    color: white;
+    /*background: repeating-linear-gradient( 45deg, lightgrey, lightgrey 800px, darkgrey 800px, darkgrey 1600px );*/
+    background-color: darkgrey;
     height: 100vh;
     width: 38vw;
+    display: table;
 }
+
 
 .textbox {
     border-radius: 2px;
@@ -82,5 +86,40 @@ textarea {
 }
 #page2{
     display: none;
+}
+
+.colorbox{
+    height: 50px;
+}
+
+.colordot {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    display: inline-block;
+    transition: width 0.15s;
+    margin-left: 4px;
+}
+
+.colordot:hover{
+    width: 45px;
+    height: 45px;
+}
+.purple {
+    background-color: #800080;
+}
+.red {
+    background-color: #F42950;
+}
+.orange {
+    background-color: #FF8C00;
+}
+.blue {
+    background-color: #20B2AA;
+}
+
+.border {
+    border: 2px solid;
+    border-color: white;
 }
 

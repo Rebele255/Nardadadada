@@ -1,21 +1,14 @@
 ﻿var cardDeck;
 //skall senare regleras av spelarna i settings vid början av spelet
 var winLimit = 3; 
-var player1 = [];
-var player2 = [];
+//var player1 = [];
+var player1 = { name: "", timeLine: [], color: "" };
+//var player2 = [];
+var player2 = { name: "", timeLine: [], color: "" };
 var players = [player1, player2];
 var currentPlayer = 0;
 var playerName1 ='';
 var playerName2 = '';
-
-$('#startbutton').click(function () {
-    playerName1 = $('#textplayer1').val();
-    playerName2 = $('#textplayer2').val();
-    winLimit = $('#winlimittext').val();
-    console.log(playerName1, playerName2, winLimit)
-    $('#page1').hide();
-    $('#page2').show();
-})
 
 //startar spelet och laddar in det som beövs för att spela
 $(document).ready(function () {
@@ -25,16 +18,50 @@ $(document).ready(function () {
     getCardDeckFromDB();
     //här ska showNewCard ligga egentligen
     
+})
+
+$('.colordot').click(function () {
+    if ($(this).parent().attr("id") == "colorbox1") {
+        player1.color = $(this).css('background-color');
+        console.log(player1);
+
+    }
+    else if ($(this).parent().attr("id") == "colorbox2") {
+        player2.color = $(this).css('background-color');
+        console.log(player2);
+
+    }
+    $(this).siblings().removeClass('border');
+    $(this).addClass('border');
+})
+
+
+
+$('#startbutton').click(function () {
+    player1.name = $('#textplayer1').val();
+    player2.name = $('#textplayer2').val();
+    //player1.color = $('#playercolor1').val();
+    //player2.color = $('#playercolor2').val();
+    winLimit = $('#winlimittext').val();
+    console.log(player1.name, player2.name, winLimit, player1.color, player2.color)
+    console.log(player1);
+    console.log(player2);
+    $('#page1').hide();
+    $('#page2').show();
+
     let nr = 0;
     players.forEach(function (player) {
         drawTimeline(player, nr)
-        nr++; 
+        nr++;
     });
 })
 
+
+
+
 function getStartYearForPlayers() {
-player1.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
-player2.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
+player1.timeLine.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
+player2.timeLine.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
 }
 function enableCurrentPlayer() {
     $('.timelinecontainer').addClass('disablePlayer');
@@ -56,16 +83,17 @@ function getCardDeckFromDB() {
         })
 }
 
+
 //denna funktion skriver ut tidslinjerna
 function drawTimeline(player, nr) {
     //tömmer vyn för timeline innan den målas om
     $(`#player${nr}`).empty(); 
-    let sortedList = player.sort();
-    let height = heightCalculation(player);
-    for (var i = 0; i < player.length; i++) {
-        $(`#player${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\"></div> </div> <div class=\"yearblock\">${sortedList[i]}</div>`);
+    let sortedList = player.timeLine.sort();
+    let height = heightCalculation(player.timeLine);
+    for (var i = 0; i < player.timeLine.length; i++) {
+        $(`#player${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> <div class=\"yearblock\" >${sortedList[i]}</div>`);
     }
-    $(`#player${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\"></div> </div> `);
+    $(`#player${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> `);
 }
 
 function heightCalculation(list) {
@@ -122,11 +150,11 @@ function showCorrectCard() {
 }
 
 function addYearToList(year) {
-    players[currentPlayer].push(year);
+    players[currentPlayer].timeLine.push(year);
 }
 
 function checkIfWon(player) { 
-    if (player.length >= winLimit) {
+    if (player.timeLine.length >= winLimit) {
         console.log('du har vunnit spelet!');
         return true;
     } else {
@@ -141,6 +169,7 @@ $('body').on("click", ".answer", function () {
     showNewCard();
     changePlayer();
 })
+
 function showNewCard() {
     $('.card').removeClass('answer');
     $(".cardContent").empty();
