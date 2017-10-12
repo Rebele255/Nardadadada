@@ -19,7 +19,6 @@ $('#startbutton').click(function () {
 
 //startar spelet och laddar in det som beövs för att spela
 $(document).ready(function () {
-    console.log('page2');
     getStartYearForPlayers();
     enableCurrentPlayer();
     //hämtar kortlek från db. visar även första kortet pga laddtid (vill egentligen inte ha visa kortet i denna funktion)
@@ -31,7 +30,6 @@ $(document).ready(function () {
         drawTimeline(player, nr)
         nr++; 
     });
-    console.log(playerName1, playerName2, winLimit)
 })
 
 function getStartYearForPlayers() {
@@ -146,28 +144,15 @@ $('body').on("click", ".answer", function () {
 function showNewCard() {
     $('.card').removeClass('answer');
     $(".cardContent").empty();
-    let color = getCardColor();
+    
+    let color = cardDeck[0].Color;
     $(".cardContent").css("background-color", color);
     $(".card").css("border-color", color)
 
     $(".cardContent").append(`<div id="categoryHeader">${cardDeck[0].Name}</div><div id="questionArea">${cardDeck[0].Question}</div>`);
 }
 
-function getCardColor() {
-    switch (cardDeck[0].Name) {
-        case "Underhållning":
-            return "purple";
 
-        case "Kända personer och händelser":
-            return "darkorange";
-
-        case "Prylar, nyheter och uppfinningar":
-            return "lightseagreen";
-
-        default:
-            return "";
-    }
-}
 function changePlayer() {
     currentPlayer = (currentPlayer + 1) % players.length;
     $('.timelinecontainer').addClass('disablePlayer');
