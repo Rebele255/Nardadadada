@@ -7,26 +7,27 @@ var player1 = { name: "", timeLine: [], color: "" };
 var player2 = { name: "", timeLine: [], color: "" };
 var players = [player1, player2];
 var currentPlayer = 0;
-var playerName1 ='';
-var playerName2 = '';
-var playerNameList = [];
+
 
 $('#startbutton').click(function () {
-    playerName1 = $('#textplayer1').val();
-    playerName2 = $('#textplayer2').val();
+    player1.name = $('#textplayer1').val();
+    player2.name = $('#textplayer2').val();
+    //player1.color = $('#playercolor1').val();
+    //player2.color = $('#playercolor2').val();
     winLimit = $('#winlimittext').val();
-    playerNameList.push(playerName1);
-    playerNameList.push(playerName2);
-    console.log(playerNameList);
-    console.log(playerName1, playerName2, winLimit)
+    console.log(player1.name, player2.name, winLimit, player1.color, player2.color)
+    console.log(player1);
+    console.log(player2);
     $('#page1').hide();
     $('#page2').show();
+
+    let nr = 0;
+    players.forEach(function (player) {
+        drawTimeline(player, nr)
+        nr++;
+    });
 })
 
-$('#restartbutton').click(function () {
-    $('#page3').hide();
-    $('#page1').show();
-})
 
 //startar spelet och laddar in det som beövs för att spela
 $(document).ready(function () {
@@ -52,29 +53,6 @@ $('.colordot').click(function () {
     $(this).siblings().removeClass('border');
     $(this).addClass('border');
 })
-
-
-
-$('#startbutton').click(function () {
-    player1.name = $('#textplayer1').val();
-    player2.name = $('#textplayer2').val();
-    //player1.color = $('#playercolor1').val();
-    //player2.color = $('#playercolor2').val();
-    winLimit = $('#winlimittext').val();
-    console.log(player1.name, player2.name, winLimit, player1.color, player2.color)
-    console.log(player1);
-    console.log(player2);
-    $('#page1').hide();
-    $('#page2').show();
-
-    let nr = 0;
-    players.forEach(function (player) {
-        drawTimeline(player, nr)
-        nr++;
-    });
-})
-
-
 
 
 function getStartYearForPlayers() {
@@ -142,8 +120,8 @@ $("body").on("click", ".timelineblock", function () {
         if (ifWon) {
             $('#page2').hide();
             $('#page3').show();
-                console.log(playerNameList[currentPlayer])
-                $('#winner').html(`<p>${playerNameList[currentPlayer]} är en riktig vinnare!</p> <p>${playerNameList[(currentPlayer+1)%playerNameList.length]} är skyldig dig ett kinderägg</p>`)
+            console.log(players[currentPlayer].name)
+                $('#winner').html(`<p>${players[currentPlayer].name} är en riktig vinnare!</p> <p>${players[(currentPlayer+1)%players.length].name} är skyldig dig ett kinderägg</p>`)
         } 
         drawTimeline(players[currentPlayer], currentPlayer);
     } else {
@@ -212,4 +190,9 @@ function changePlayer() {
     $(`#player${currentPlayer}`).removeClass('disablePlayer');
     $(`#player${currentPlayer}`).css('pointer-events', 'all');
 }
+
+$('#restartbutton').click(function () {
+    $('#page3').hide();
+    $('#page1').show();
+})
 
