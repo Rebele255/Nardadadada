@@ -2,25 +2,29 @@
 //skall senare regleras av spelarna i settings vid början av spelet
 var winLimit = 3; 
 //var player1 = [];
-var player1 = { name: "", timeLine: [], color: "", number: 0 };
+//var player1 = { name: "", timeLine: [], color: "", number: 0 };
 //var player2 = [];
-var player2 = { name: "", timeLine: [], color: "", number: 1 };
-var player3 = { name: "Henrik", timeLine: [], color: "yellow", number: 2 };
+//var player2 = { name: "", timeLine: [], color: "", number: 1 };
+//var player3 = { name: "Henrik", timeLine: [], color: "yellow", number: 2 };
 
-var players = [player1, player2, player3];
+var players = [];
 var currentPlayer = 0;
 
 
+
 $('#startbutton').click(function () {
-    player1.name = $('#textplayer1').val();
-    player2.name = $('#textplayer2').val();
+    $('.settingsbox').each(function (index) {
+        let color = $(this).children().find('.border').css('background-color');
+        let name = $(this).children('input').val();
+        players[index] = { name: name, timeLine: [], color: color, number: index };
+        getStartYearForPlayers(players[index])
+        console.log(players)
+    })
+    //player1.name = $('#textplayer1').val();
+    //player2.name = $('#textplayer2').val();
     //player1.color = $('#playercolor1').val();
     //player2.color = $('#playercolor2').val();
     winLimit = $('#winlimittext').val();
-    console.log(player1.name, player2.name, winLimit, player1.color, player2.color)
-    console.log(player1);
-    console.log(player2);
-    
 
     $('#page1').hide();
     $('#page2').show();
@@ -85,16 +89,16 @@ function prepareNewGame() {
 }
 
 $('.colordot').click(function () {
-    if ($(this).parent().attr("id") == "colorbox1") {
-        player1.color = $(this).css('background-color');
-        console.log(player1);
+    //if ($(this).parent().attr("id") == "colorbox1") {
+    //    player1.color = $(this).css('background-color');
+    //    console.log(player1);
 
-    }
-    else if ($(this).parent().attr("id") == "colorbox2") {
-        player2.color = $(this).css('background-color');
-        console.log(player2);
+    //}
+    //else if ($(this).parent().attr("id") == "colorbox2") {
+    //    player2.color = $(this).css('background-color');
+    //    console.log(player2);
 
-    }
+    //}
     $(this).siblings().removeClass('border');
     $(this).addClass('border');
 })
@@ -176,7 +180,6 @@ $("body").on("mouseleave", ".timelineblock", function () {
 
 //nu har tidslinjerna ritats upp, ett kort visats och man ska trycka på tidslinjen för att svara
 $("body").on("click", ".timelineblock", function () {
-    
 
     $(`#display${currentPlayer}`).addClass("lookable");
     //här tar vi in svaret från spelaren
