@@ -16,7 +16,7 @@ $('#startbutton').click(function () {
     $('.settingsbox').each(function (index) {
         let color = $(this).children().find('.border').css('background-color');
         let name = $(this).children('input').val();
-        players[index] = { name: name, timeLine: [], tempLine: [], color: color, number: index };
+        players[index] = { name: name, timeLine: [], tempList: [], color: color, number: index };
         getStartYearForPlayers(players[index])
         console.log(players)
     })
@@ -150,7 +150,9 @@ function getCardDeckFromDB() {
 }
 function createCardDisplay() {
     $('#playingfield').append(`<div class="display">
-            <div class="ful"></div>
+            <div class="ful">
+            <button id="lockbutton" style="visibility: hidden;">Lås in årtal</button>
+            </div>
             <div class="card">
                 <div id="logoName">Nardada</div>
                 <div class="cardContent"></div>
@@ -176,13 +178,30 @@ function drawTimeline(player, nr) {
     //tömmer vyn för timeline innan den målas om
     $(`#timelinecontainer${nr}`).empty(); 
     $(`#timelinecontainer${nr}`).css('background-color', 'white');
+    let height = heightCalculation(player.timeLine, player.tempList);
     let timeLineSorted = player.timeLine.sort();
-    let tempListSorted = player.tempList.sort();
+    if (player.tempList.length < 1) {
+        for (var i = 0; i < timeLineSorted.length; i++) {
+            $(`#timelinecontainer${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> <div class=\"yearblock\" >${timeLineSorted[i]}</div>`);
 
-    let height = heightCalculation(player.timeLine);
-    let j = 0;
-    for (var i = 0; i < player.timeLine.length; i++) {
-        $(`#timelinecontainer${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> <div class=\"yearblock\" >${sortedList[i]}</div>`);
+        }
+    }
+    else {
+        
+        let tempListSorted = player.tempList.sort();
+        let iterations = player.timeLine.length + player.tempList.length;
+        let j = 0;
+        let k = 0;
+        for (var i = 0; i < iterations; i++) {
+            if (timeLineSorted[j] < tempListSorted[k] || tempListSorted[k] == null && timeLineSorted != null) {
+                $(`#timelinecontainer${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> <div class=\"yearblock\" >${timeLineSorted[j]}</div>`);
+                j++;
+            }
+            else {
+                $(`#timelinecontainer${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> <div class=\"yearblock\" style=\"opacity: 0.5\">${tempListSorted[k]}</div>`);
+                k++;
+            }
+        }
     }
     $(`#timelinecontainer${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> `);
 }
@@ -192,8 +211,9 @@ function displayWidthCalculation() {
     return width;
 }
 
-function heightCalculation(list) {
-    let height = (100 - (list.length * 4)) / (list.length + 1);
+function heightCalculation(list1, list2) {
+    let length = list1.length + list2.length;
+    let height = (100 - (length * 4)) / (length + 1);
     return height;
 }
 
@@ -216,7 +236,9 @@ $("body").on("click", ".timelineblock", function () {
 
     //här kontrollerar vi om svaret är rätt
     if (cardDeck[0].Year >= yearBefore && (cardDeck[0].Year <= yearAfter || yearAfter == "")) {
+        $('.card').removeClass('wrong');
         showCorrectCard();
+        showLockButton();
         addYearToList(cardDeck[0].Year);
         var ifWon = checkIfWon(players[currentPlayer]);
         if (ifWon) {
@@ -227,12 +249,21 @@ $("body").on("click", ".timelineblock", function () {
         } 
         drawTimeline(players[currentPlayer], currentPlayer);
     } else {
+        $('.card').removeClass('correct');
         showWrongCard();
     }
 })
 
+function showLockButton() {
+    $('#lockbutton').css('visibility', 'visible');
+}
+function hideLockButton() {
+    $('#lockbutton').css('visibility', 'hidden');
+
+}
+
 function showWrongCard() {
-    $('.card').addClass('answer');
+    $('.card').addClass('answer wrong');
     $('.cardContent').empty();
     $('.cardContent').css('background-color', 'red');
     $('.card').css('border-color', 'red')
@@ -243,7 +274,7 @@ function showWrongCard() {
 }
 
 function showCorrectCard() {
-    $('.card').addClass('answer');
+    $('.card').addClass('answer correct');
     $('.cardContent').empty();
     $('.cardContent').css('background-color', 'yellowgreen');
     $('.card').css('border-color', 'yellowgreen')
@@ -251,10 +282,11 @@ function showCorrectCard() {
             <div class="rightorwrong">Rätt</div>
             <div id="aretVar">Året var</div>
             <div id="correctYear">${cardDeck[0].Year}</div>`);
+
 }
 
 function addYearToList(year) {
-    players[currentPlayer].tempLine.push(year);
+    players[currentPlayer].tempList.push(year);
 }
 
 function checkIfWon(player) { 
@@ -269,11 +301,24 @@ function checkIfWon(player) {
 
 $('body').on("click", ".answer", function () {
     //ta bort översta kortet i frågeleken
-    cardDeck.shift();
-    showNewCard();
-    enableCurrentPlayer();
-
+    //cardDeck.shift();
+    //showNewCard();
+    if ($(this).hasClass('correct')) {
+        enableCurrentPlayer();
+        cardDeck.shift();
+        showNewCard();
+    }
+    else if ($(this).hasClass('wrong')) {
+        cardDeck.shift();
+        showNewCard();
+        changePlayer();
+        
+    }
     //changePlayer();
+})
+$('body').on("click", "#lockbutton", function () {
+    players[currentPlayer].timeLine = players[currentPlayer].timeLine.concat(players[currentPlayer].tempList);
+    changePlayer();
 })
 
 function showNewCard() {
@@ -289,10 +334,15 @@ function showNewCard() {
 
 
 function changePlayer() {
+    players[currentPlayer].tempList = [];
+    drawTimeline(players[currentPlayer], currentPlayer);
     $(`#display${currentPlayer}`).removeClass('active lookable');
     currentPlayer = (currentPlayer + 1) % players.length;
     $(`#display${currentPlayer}`).addClass('active');
+    players[currentPlayer].tempList = [];
+    hideLockButton();
 }
+
 
 $('#restartbutton').click(function () {
     $('#page3').hide();

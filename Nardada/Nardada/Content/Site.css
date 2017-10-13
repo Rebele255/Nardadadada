@@ -15,7 +15,9 @@ select,
 textarea {
     max-width: 280px;
 }
-
+#lockbutton{
+    margin: 0 auto;
+}
 .timelinecontainer{
     height: 92%;
     width: 100%;
