@@ -16,7 +16,7 @@ $('#startbutton').click(function () {
     $('.settingsbox').each(function (index) {
         let color = $(this).children().find('.border').css('background-color');
         let name = $(this).children('input').val();
-        players[index] = { name: name, timeLine: [], color: color, number: index };
+        players[index] = { name: name, timeLine: [], tempLine: [], color: color, number: index };
         getStartYearForPlayers(players[index])
         console.log(players)
     })
@@ -129,6 +129,8 @@ player.timeLine.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
 }
 
 function enableCurrentPlayer() {
+    $(`#display${currentPlayer}`).removeClass('lookable');
+
     $(`#display${currentPlayer}`).addClass('active');
 }
 
@@ -174,8 +176,11 @@ function drawTimeline(player, nr) {
     //tömmer vyn för timeline innan den målas om
     $(`#timelinecontainer${nr}`).empty(); 
     $(`#timelinecontainer${nr}`).css('background-color', 'white');
-    let sortedList = player.timeLine.sort();
+    let timeLineSorted = player.timeLine.sort();
+    let tempListSorted = player.tempList.sort();
+
     let height = heightCalculation(player.timeLine);
+    let j = 0;
     for (var i = 0; i < player.timeLine.length; i++) {
         $(`#timelinecontainer${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> <div class=\"yearblock\" >${sortedList[i]}</div>`);
     }
@@ -201,7 +206,9 @@ $("body").on("mouseleave", ".timelineblock", function () {
 
 //nu har tidslinjerna ritats upp, ett kort visats och man ska trycka på tidslinjen för att svara
 $("body").on("click", ".timelineblock", function () {
-
+    //if ($(`#display${currentPlayer}`).hasClass("lookable")) {
+    //    changePlayer();
+    //}
     $(`#display${currentPlayer}`).addClass("lookable");
     //här tar vi in svaret från spelaren
     let yearBefore = $(this).prev().text();
@@ -247,7 +254,7 @@ function showCorrectCard() {
 }
 
 function addYearToList(year) {
-    players[currentPlayer].timeLine.push(year);
+    players[currentPlayer].tempLine.push(year);
 }
 
 function checkIfWon(player) { 
@@ -264,7 +271,9 @@ $('body').on("click", ".answer", function () {
     //ta bort översta kortet i frågeleken
     cardDeck.shift();
     showNewCard();
-    changePlayer();
+    enableCurrentPlayer();
+
+    //changePlayer();
 })
 
 function showNewCard() {
