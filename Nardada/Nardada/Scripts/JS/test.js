@@ -296,7 +296,7 @@ function addYearToList(year) {
 }
 
 function checkIfWon(player) {
-    if (player.timeLine.length >= winLimit) {
+    if (player.timeLine.length + player.tempList.length >= winLimit) {
         console.log('du har vunnit spelet!');
         return true;
     } else {
