@@ -189,7 +189,7 @@
 }
 
 #settingsDiv {
-    height: 80%;
+    height: 70%;
     width: 40%;
     background-color: lightgray;
     margin: 0 auto;
@@ -233,7 +233,9 @@
 }
 
 #twoButtons {
-    /*background-color: blue;*/
-    width: 100%;
+    background-color: lightgray;
+    width: 40%;
     padding: 10px;
+    margin: 0 auto;
+    text-align: center;
 }
