@@ -126,7 +126,7 @@
     transform: translate(-50%, 0%);
 }
 
-#restartbutton {
+.myButton {
     background-color: white;
     border: 2px solid black;
     border-radius: 4px;
@@ -146,6 +146,22 @@
     z-index: 10;
 }
 
+.buttonSetting {
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 4px;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 4px 2px;
+    cursor: pointer;
+    display: inline-block;
+}
+
 #winner {
     font-size: 40px;
     text-align: center;
@@ -156,9 +172,68 @@
     z-index: 10;
 }
 
-#restartbutton:hover {
+.myButton:hover {
     background-color: darkcyan;
     border-color: white;
     color: white;
 }
 
+#winlimitContainer {
+    height: 12%;
+    width: 40%;
+    background-color: lightgrey;
+    margin: 0 auto;
+    text-align: center;
+    padding: 2% 5%;
+    font-weight: bold; 
+}
+
+#settingsDiv {
+    height: 80%;
+    width: 40%;
+    background-color: lightgray;
+    margin: 0 auto;
+    text-align: center;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+    border-radius: 10px;
+    height: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255,1.0);
+}
+
+.settingsContainer {
+    height: 90vh;
+    width: 100vw;
+}
+
+#custom-handle {
+    width: 3em; /*bredd på reglageknappen*/
+    height: 1.6em; /*höjd på reglageknappen*/
+    top: 50%; /*var på reglageknappen sitter i förhållande till reglagelinjen*/
+    margin-top: -.8em;
+    text-align: center; /*var siffran står i reglageknappen horisontellt sett*/
+    line-height: 1.6em; /*var siffran står i reglageknappen vertikalt sett (kan hamna utanför)*/
+}
+
+#custom-handle:active {
+    background-color: white;
+    color: black;
+}
+
+#twoButtons {
+    /*background-color: blue;*/
+    width: 100%;
+    padding: 10px;
+}

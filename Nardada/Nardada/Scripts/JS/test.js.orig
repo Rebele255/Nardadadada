@@ -1,46 +1,88 @@
 ﻿var cardDeck;
 //skall senare regleras av spelarna i settings vid början av spelet
-var winLimit = 3; 
+var winLimit = 3;
 //var player1 = [];
-var player1 = { name: "", timeLine: [], color: "" };
+//var player1 = { name: "", timeLine: [], color: "", number: 0 };
 //var player2 = [];
-var player2 = { name: "", timeLine: [], color: "" };
-var players = [player1, player2];
+//var player2 = { name: "", timeLine: [], color: "", number: 1 };
+//var player3 = { name: "Henrik", timeLine: [], color: "yellow", number: 2 };
+
+var players = [];
 var currentPlayer = 0;
 
 
+
 $('#startbutton').click(function () {
-    player1.name = $('#textplayer1').val();
-    player2.name = $('#textplayer2').val();
+    $('.settingsbox').each(function (index) {
+        let color = $(this).children().find('.border').css('background-color');
+        let name = $(this).children('input').val();
+        players[index] = { name: name, timeLine: [], tempList: [], color: color, number: index };
+        getStartYearForPlayers(players[index])
+        console.log(players)
+    })
+    //player1.name = $('#textplayer1').val();
+    //player2.name = $('#textplayer2').val();
     //player1.color = $('#playercolor1').val();
     //player2.color = $('#playercolor2').val();
     winLimit = $('#winlimittext').val();
-    console.log(player1.name, player2.name, winLimit, player1.color, player2.color)
-    console.log(player1);
-    console.log(player2);
-    
 
     $('#page1').hide();
     $('#page2').show();
 
-    let nr = 0;
-    players.forEach(function (player) {
-        drawTimeline(player, nr)
-        nr++;
-    });
-<<<<<<< HEAD
+    //let nr = 0;
+    //players.forEach(function (player) {
+    //    drawTimeline(player, nr)
+    //    nr++;
+    //});
+    //$(`#footer1`).css('background-color', `${player1.color}`);
+    //$(`#footer2`).css('background-color', `${player2.color}`);
+    //$(`#arrow1`).css('border-top', `20px solid ${player1.color}`);
+    //$(`#arrow2`).css('border-top', `20px solid ${player2.color}`);
+    //$(`#footer1`).text(player1.name);
+    //$(`#footer2`).text(player2.name);
+    let j = 0;
+
+    for (var i = 0; i < players.length + 1; i++) {
+        if (players.length % 2 == 0) {
+            if (i == players.length / 2) {
+                createCardDisplay();
+            }
+            else {
+                createDisplay(players[j]);
+                j++;
+            }
+        }
+        else if (players.length % 2 == 1) {
+            if (i == (players.length - 1) / 2) {
+                createCardDisplay();
+            }
+            else {
+                createDisplay(players[j]);
+                j++;
+            }
+        }
+    }
+    enableCurrentPlayer();
+
     showNewCard();
-=======
-    $(`#footer1`).css('background-color', `${player1.color}`);
-    $(`#footer2`).css('background-color', `${player2.color}`);
-    $(`#arrow1`).css('border-top', `20px solid ${player1.color}`);
-    $(`#arrow2`).css('border-top', `20px solid ${player2.color}`);
-    $(`#footer1`).text(player1.name);
-    $(`#footer2`).text(player2.name);
->>>>>>> bb081d6ae50a6801077375dd8c6b64d0190993d8
 })
 
+$('body').on("click", "#addplayer", function () {
+    $('#settingsdisplay').find('#addplayer').remove();
 
+    $('#settingsdisplay').append(`<div class="settingsbox">
+                    <h2>Ny spelare</h2>
+                    <h3>Färg</h3>
+                    <div class="colorbox" id="colorbox1">
+                        <div class="colordot purple"></div>
+                        <div class="colordot red"></div>
+                        <div class="colordot orange"></div>
+                        <div class="colordot blue"></div>
+                    </div>
+                    <input type="text" class="textbox" placeholder="Namn"> 
+                </div>
+            <p id="addplayer">Lägg till spelare</p>`)
+})
 //startar spelet och laddar in det som beövs för att spela
 $(document).ready(function () {
     prepareNewGame();
@@ -50,43 +92,46 @@ $(document).ready(function () {
 })
 
 function prepareNewGame() {
-    currentPlayer = 1;
-
-    changePlayer();
-    //changePlayer();
-
+    currentPlayer = 0;
+    $('#playingfield').empty();
     //töm timelines för spelarna (annars ligger förra rundans år kvar)
     players.forEach(function (player) {
         player.timeLine = [];
+        getStartYearForPlayers(player);
     });
-    getStartYearForPlayers();
-    enableCurrentPlayer();
+
+    //enableCurrentPlayer();
 }
 
-$('.colordot').click(function () {
-    if ($(this).parent().attr("id") == "colorbox1") {
-        player1.color = $(this).css('background-color');
-        console.log(player1);
-
-    }
-    else if ($(this).parent().attr("id") == "colorbox2") {
-        player2.color = $(this).css('background-color');
-        console.log(player2);
-
-    }
+$('body').on("click", ".colordot", function () {
     $(this).siblings().removeClass('border');
     $(this).addClass('border');
 })
 
+//$('.colordot').click(function () {
+//    //if ($(this).parent().attr("id") == "colorbox1") {
+//    //    player1.color = $(this).css('background-color');
+//    //    console.log(player1);
 
-function getStartYearForPlayers() {
-player1.timeLine.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
-player2.timeLine.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
+//    //}
+//    //else if ($(this).parent().attr("id") == "colorbox2") {
+//    //    player2.color = $(this).css('background-color');
+//    //    console.log(player2);
+
+//    //}
+//    $(this).siblings().removeClass('border');
+//    $(this).addClass('border');
+//})
+
+
+function getStartYearForPlayers(player) {
+    player.timeLine.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
 }
 
 function enableCurrentPlayer() {
-    $('.timelinecontainer').addClass('disablePlayer');
-    $(`#player${currentPlayer}`).removeClass('disablePlayer');
+    $(`#display${currentPlayer}`).removeClass('lookable');
+
+    $(`#display${currentPlayer}`).addClass('active');
 }
 
 function getCardDeckFromDB() {
@@ -103,22 +148,72 @@ function getCardDeckFromDB() {
             console.log(xhr, status, error);
         })
 }
+function createCardDisplay() {
+    $('#playingfield').append(`<div class="display">
+            <div class="ful">
+            <button id="lockbutton" style="visibility: hidden;">Lås in årtal</button>
+            </div>
+            <div class="card">
+                <div id="logoName">Nardada</div>
+                <div class="cardContent"></div>
+            </div>
+        </div>`)
+}
 
+function createDisplay(player) {
+    let width = displayWidthCalculation();
+    $('#playingfield').append(`<div class=\"display timeline\" id=\"display${player.number}\" style=\"width: ${width}vw; background-color: ${player.color}\" >
+            <div class=\"timelinecontainer\" id=\"timelinecontainer${player.number}\"/>
+            <div class=\"arrowcontainer\">
+            <div class=\"arrow\" style=\"border-top-color: ${player.color}\"/>
+            </div>
+            <div class=\"todayfooter\">${player.name}</div></div>`) /*{player.name }</div >*/
+    //$(`#arrow${nr}`).css('border-top-color', `${player.color}`);
+    drawTimeline(player, player.number);
+
+}
 
 //denna funktion skriver ut tidslinjerna
 function drawTimeline(player, nr) {
     //tömmer vyn för timeline innan den målas om
-    $(`#player${nr}`).empty(); 
-    let sortedList = player.timeLine.sort();
-    let height = heightCalculation(player.timeLine);
-    for (var i = 0; i < player.timeLine.length; i++) {
-        $(`#player${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> <div class=\"yearblock\" >${sortedList[i]}</div>`);
+    $(`#timelinecontainer${nr}`).empty();
+    $(`#timelinecontainer${nr}`).css('background-color', 'white');
+    let height = heightCalculation(player.timeLine, player.tempList);
+    let timeLineSorted = player.timeLine.sort();
+    if (player.tempList.length < 1) {
+        for (var i = 0; i < timeLineSorted.length; i++) {
+            $(`#timelinecontainer${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> <div class=\"yearblock\" >${timeLineSorted[i]}</div>`);
+
+        }
     }
-    $(`#player${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> `);
+    else {
+        
+        let tempListSorted = player.tempList.sort();
+        let iterations = player.timeLine.length + player.tempList.length;
+        let j = 0;
+        let k = 0;
+        for (var i = 0; i < iterations; i++) {
+            if (timeLineSorted[j] < tempListSorted[k] || tempListSorted[k] == null && timeLineSorted != null) {
+                $(`#timelinecontainer${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> <div class=\"yearblock\" >${timeLineSorted[j]}</div>`);
+                j++;
+            }
+            else {
+                $(`#timelinecontainer${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> <div class=\"yearblock\" style=\"opacity: 0.5\">${tempListSorted[k]}</div>`);
+                k++;
+            }
+        }
+    }
+    $(`#timelinecontainer${nr}`).append(`<div class=\"timelineblock\" style=\"height: ${height}%\"> <div class=\"timelineline\" style="background-color:${player.color}"></div> </div> `);
 }
 
-function heightCalculation(list) {
-    let height = (100 - (list.length * 4)) / (list.length + 1);
+function displayWidthCalculation() {
+    let width = (100 - 25) / players.length;
+    return width;
+}
+
+function heightCalculation(list1, list2) {
+    let length = list1.length + list2.length;
+    let height = (100 - (length * 4)) / (length + 1);
     return height;
 }
 
@@ -131,31 +226,44 @@ $("body").on("mouseleave", ".timelineblock", function () {
 
 //nu har tidslinjerna ritats upp, ett kort visats och man ska trycka på tidslinjen för att svara
 $("body").on("click", ".timelineblock", function () {
-    
-    $(this).parent().css("pointer-events", "none");
+    //if ($(`#display${currentPlayer}`).hasClass("lookable")) {
+    //    changePlayer();
+    //}
+    $(`#display${currentPlayer}`).addClass("lookable");
     //här tar vi in svaret från spelaren
     let yearBefore = $(this).prev().text();
     let yearAfter = $(this).next().text();
 
     //här kontrollerar vi om svaret är rätt
     if (cardDeck[0].Year >= yearBefore && (cardDeck[0].Year <= yearAfter || yearAfter == "")) {
+        $('.card').removeClass('wrong');
         showCorrectCard();
+        showLockButton();
         addYearToList(cardDeck[0].Year);
         var ifWon = checkIfWon(players[currentPlayer]);
         if (ifWon) {
             $('#page2').hide();
             $('#page3').show();
             console.log(players[currentPlayer].name)
-                $('#winner').html(`<p>${players[currentPlayer].name} är en riktig vinnare!</p> <p>${players[(currentPlayer+1)%players.length].name} är skyldig dig ett kinderägg</p>`)
-        } 
+            $('#winner').html(`<p>${players[currentPlayer].name} är en riktig vinnare!</p> <p>De andra är skyldig dig ett kinderägg</p>`)
+        }
         drawTimeline(players[currentPlayer], currentPlayer);
     } else {
+        $('.card').removeClass('correct');
         showWrongCard();
     }
 })
 
+function showLockButton() {
+    $('#lockbutton').css('visibility', 'visible');
+}
+function hideLockButton() {
+    $('#lockbutton').css('visibility', 'hidden');
+
+}
+
 function showWrongCard() {
-    $('.card').addClass('answer');
+    $('.card').addClass('answer wrong');
     $('.cardContent').empty();
     $('.cardContent').css('background-color', 'red');
     $('.card').css('border-color', 'red')
@@ -166,7 +274,7 @@ function showWrongCard() {
 }
 
 function showCorrectCard() {
-    $('.card').addClass('answer');
+    $('.card').addClass('answer correct');
     $('.cardContent').empty();
     $('.cardContent').css('background-color', 'yellowgreen');
     $('.card').css('border-color', 'yellowgreen')
@@ -174,13 +282,14 @@ function showCorrectCard() {
             <div class="rightorwrong">Rätt</div>
             <div id="aretVar">Året var</div>
             <div id="correctYear">${cardDeck[0].Year}</div>`);
+
 }
 
 function addYearToList(year) {
-    players[currentPlayer].timeLine.push(year);
+    players[currentPlayer].tempList.push(year);
 }
 
-function checkIfWon(player) { 
+function checkIfWon(player) {
     if (player.timeLine.length >= winLimit) {
         console.log('du har vunnit spelet!');
         return true;
@@ -192,15 +301,30 @@ function checkIfWon(player) {
 
 $('body').on("click", ".answer", function () {
     //ta bort översta kortet i frågeleken
-    cardDeck.shift();
-    showNewCard();
+    //cardDeck.shift();
+    //showNewCard();
+    if ($(this).hasClass('correct')) {
+        enableCurrentPlayer();
+        cardDeck.shift();
+        showNewCard();
+    }
+    else if ($(this).hasClass('wrong')) {
+        cardDeck.shift();
+        showNewCard();
+        changePlayer();
+        
+    }
+    //changePlayer();
+})
+$('body').on("click", "#lockbutton", function () {
+    players[currentPlayer].timeLine = players[currentPlayer].timeLine.concat(players[currentPlayer].tempList);
     changePlayer();
 })
 
 function showNewCard() {
     $('.card').removeClass('answer');
     $(".cardContent").empty();
-    
+
     let color = cardDeck[0].Color;
     $(".cardContent").css("background-color", color);
     $(".card").css("border-color", color)
@@ -210,18 +334,40 @@ function showNewCard() {
 
 
 function changePlayer() {
+    players[currentPlayer].tempList = [];
+    drawTimeline(players[currentPlayer], currentPlayer);
+    $(`#display${currentPlayer}`).removeClass('active lookable');
     currentPlayer = (currentPlayer + 1) % players.length;
-
-    $('.timelinecontainer').addClass('disablePlayer');
-    $(`#player${currentPlayer}`).removeClass('disablePlayer');
-    $(`#player${currentPlayer}`).css('pointer-events', 'all');
-
+    $(`#display${currentPlayer}`).addClass('active');
+    players[currentPlayer].tempList = [];
+    hideLockButton();
 }
 
+<<<<<<< HEAD
+
 $('#restartbutton').click(function () {
+=======
+$('#restartButton').click(function () {
+>>>>>>> 86c9246fb93d5cbe9b39117f9b62041778ad395d
     $('#page3').hide();
     $('#page1').show();
     cardDeck.shift();
     prepareNewGame();
 })
+
+//winlimit slider
+$("#slider").slider({
+    value: 2,
+    min: 2,
+    max: 20,
+    step: 1,
+},
+    {
+        create: function () {
+            $("#custom-handle").text($(this).slider("value"));
+        },
+        slide: function (event, ui) {
+            $("#custom-handle").text(ui.value);
+        }
+    });
 
