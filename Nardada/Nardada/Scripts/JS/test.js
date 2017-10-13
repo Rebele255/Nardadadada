@@ -67,7 +67,22 @@ $('#startbutton').click(function () {
     showNewCard();
 })
 
+$('body').on("click", "#addplayer", function () {
+    $('#settingsdisplay').find('#addplayer').remove();
 
+    $('#settingsdisplay').append(`<div class="settingsbox">
+                    <h2>Ny spelare</h2>
+                    <h3>Färg</h3>
+                    <div class="colorbox" id="colorbox1">
+                        <div class="colordot purple"></div>
+                        <div class="colordot red"></div>
+                        <div class="colordot orange"></div>
+                        <div class="colordot blue"></div>
+                    </div>
+                    <input type="text" class="textbox" placeholder="Namn"> 
+                </div>
+            <p id="addplayer">Lägg till spelare</p>`)
+})
 //startar spelet och laddar in det som beövs för att spela
 $(document).ready(function () {
     prepareNewGame();
@@ -88,20 +103,25 @@ function prepareNewGame() {
     //enableCurrentPlayer();
 }
 
-$('.colordot').click(function () {
-    //if ($(this).parent().attr("id") == "colorbox1") {
-    //    player1.color = $(this).css('background-color');
-    //    console.log(player1);
-
-    //}
-    //else if ($(this).parent().attr("id") == "colorbox2") {
-    //    player2.color = $(this).css('background-color');
-    //    console.log(player2);
-
-    //}
+$('body').on("click", ".colordot", function () {
     $(this).siblings().removeClass('border');
     $(this).addClass('border');
 })
+
+//$('.colordot').click(function () {
+//    //if ($(this).parent().attr("id") == "colorbox1") {
+//    //    player1.color = $(this).css('background-color');
+//    //    console.log(player1);
+
+//    //}
+//    //else if ($(this).parent().attr("id") == "colorbox2") {
+//    //    player2.color = $(this).css('background-color');
+//    //    console.log(player2);
+
+//    //}
+//    $(this).siblings().removeClass('border');
+//    $(this).addClass('border');
+//})
 
 
 function getStartYearForPlayers(player) {
