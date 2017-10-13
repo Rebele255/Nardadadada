@@ -166,6 +166,7 @@ function createDisplay(player) {
             <div class=\"todayfooter\">${player.name}</div></div>`) /*{player.name }</div >*/
     //$(`#arrow${nr}`).css('border-top-color', `${player.color}`);
     drawTimeline(player, player.number);
+
 }
 
 //denna funktion skriver ut tidslinjerna
@@ -215,7 +216,7 @@ $("body").on("click", ".timelineblock", function () {
             $('#page2').hide();
             $('#page3').show();
             console.log(players[currentPlayer].name)
-                $('#winner').html(`<p>${players[currentPlayer].name} är en riktig vinnare!</p> <p>${players[(currentPlayer+1)%players.length].name} är skyldig dig ett kinderägg</p>`)
+                $('#winner').html(`<p>${players[currentPlayer].name} är en riktig vinnare!</p> <p>De andra är skyldig dig ett kinderägg</p>`)
         } 
         drawTimeline(players[currentPlayer], currentPlayer);
     } else {

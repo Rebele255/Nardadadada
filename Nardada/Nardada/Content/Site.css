@@ -37,7 +37,7 @@ textarea {
 }
 .yearblock {
     height: 4%;
-    width: 8%;
+    width: 40px;
     background-color: darkslategrey;
     border-radius: 2px;
     margin: 0 auto;
