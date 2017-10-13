@@ -24,6 +24,10 @@ textarea {
     width: 50%;
     margin: 0 auto;
 }
+.timeline {
+    pointer-events: none;
+    opacity: 0.4;
+}
 .timelineline {
     height: 100%;
     width: 2%;
@@ -33,7 +37,7 @@ textarea {
 }
 .yearblock {
     height: 4%;
-    width: 8%;
+    width: 40px;
     background-color: darkslategrey;
     border-radius: 2px;
     margin: 0 auto;
@@ -47,18 +51,25 @@ textarea {
 }
 .display {
     height: 90vh;
-    width: 33.3vw;
+    width: 25vw;
     float: left;
+    display: inline-block;
+}
+.active {
+    opacity: 1;
+    pointer-events: all;
+}
+.lookable{
+    pointer-events: none;
 }
 
-.playerheader {
+/*.playerheader {
     background-color: burlywood;
     height: 10%;
     width: 100%;
-}
+}*/
 
 .todayfooter {
-    background-color: burlywood;
     height: 5%;
     width: 100%;
     color: white;
@@ -66,16 +77,21 @@ textarea {
     text-align: center;
     font-weight: bold;
 }
+.arrowcontainer{
+    background-color: white;
+    height: 20px;
+    width: 100%;
+}
 .arrow {
-
     height: 0;
     width: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-top: 20px solid black;
-   margin: 0 auto;
+    border-top: 20px solid;
+    margin: 0 auto;
     text-align: center;
-
+    background-color: white;
+    
 } 
 /*.arrow {
     background-color: burlywood;
@@ -156,4 +172,5 @@ textarea {
     border: 2px solid;
     border-color: white;
 }
+
 
