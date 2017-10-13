@@ -12,7 +12,7 @@ var currentPlayer = 0;
 
 
 
-$('#startbutton').click(function () {
+$('#startButton').click(function () {
     $('.settingsbox').each(function (index) {
         let color = $(this).children().find('.border').css('background-color');
         let name = $(this).children('input').val();
@@ -24,7 +24,12 @@ $('#startbutton').click(function () {
     //player2.name = $('#textplayer2').val();
     //player1.color = $('#playercolor1').val();
     //player2.color = $('#playercolor2').val();
-    winLimit = $('#winlimittext').val();
+    winLimit = 2;
+    console.log($("#custom-handle").slider())
+    console.log($("#slider").val())
+    console.log($("#custom-handle[0]"))
+    //winLimit = $('#winlimittext').val();
+    //console.log($("#custom-handle").text())
 
     $('#page1').hide();
     $('#page2').show();
@@ -67,10 +72,10 @@ $('#startbutton').click(function () {
     showNewCard();
 })
 
-$('body').on("click", "#addplayer", function () {
-    $('#settingsdisplay').find('#addplayer').remove();
+$('body').on("click", "#addPlayer", function () {
+    //$('#settingsdisplay').find('#addplayer').remove();
 
-    $('#settingsdisplay').append(`<div class="settingsbox">
+    $("#settingsDiv").prepend(`<div class="settingsbox">
                     <h2>Ny spelare</h2>
                     <h3>Färg</h3>
                     <div class="colorbox" id="colorbox1">
@@ -81,7 +86,8 @@ $('body').on("click", "#addplayer", function () {
                     </div>
                     <input type="text" class="textbox" placeholder="Namn"> 
                 </div>
-            <p id="addplayer">Lägg till spelare</p>`)
+<hr/>
+          `) /*< p id= "addplayer" > Lägg till spelare</p >*/
 })
 //startar spelet och laddar in det som beövs för att spela
 $(document).ready(function () {
@@ -294,7 +300,7 @@ $('#restartButton').click(function () {
 
 //winlimit slider
 $("#slider").slider({
-    value: 2,
+    //value:1,
     min: 2,
     max: 20,
     step: 1,
@@ -302,9 +308,15 @@ $("#slider").slider({
     {
         create: function () {
             $("#custom-handle").text($(this).slider("value"));
+            
         },
         slide: function (event, ui) {
             $("#custom-handle").text(ui.value);
+            //console.log(ui.value)
+            console.log($(this).slider("value", ui.value))
+            winLimit = $("#custom-handle").val(ui.value);
+                //$("#slider").slider("value")
         }
     });
+
 
