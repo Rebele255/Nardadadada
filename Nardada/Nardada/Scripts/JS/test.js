@@ -285,7 +285,7 @@ function changePlayer() {
     $(`#display${currentPlayer}`).addClass('active');
 }
 
-$('#restartbutton').click(function () {
+$('#restartButton').click(function () {
     $('#page3').hide();
     $('#page1').show();
     cardDeck.shift();
