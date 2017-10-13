@@ -1,6 +1,6 @@
 ﻿var cardDeck;
 //skall senare regleras av spelarna i settings vid början av spelet
-var winLimit = 3; 
+var winLimit = 3;
 //var player1 = [];
 //var player1 = { name: "", timeLine: [], color: "", number: 0 };
 //var player2 = [];
@@ -44,7 +44,7 @@ $('#startbutton').click(function () {
 
     for (var i = 0; i < players.length + 1; i++) {
         if (players.length % 2 == 0) {
-            if (i == players.length/2) {
+            if (i == players.length / 2) {
                 createCardDisplay();
             }
             else {
@@ -53,7 +53,7 @@ $('#startbutton').click(function () {
             }
         }
         else if (players.length % 2 == 1) {
-            if (i == (players.length-1) /2) {
+            if (i == (players.length - 1) / 2) {
                 createCardDisplay();
             }
             else {
@@ -125,7 +125,7 @@ $('body').on("click", ".colordot", function () {
 
 
 function getStartYearForPlayers(player) {
-player.timeLine.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
+    player.timeLine.push(Math.floor(Math.random() * (2000 - 1900 + 1)) + 1900);
 }
 
 function enableCurrentPlayer() {
@@ -172,7 +172,7 @@ function createDisplay(player) {
 //denna funktion skriver ut tidslinjerna
 function drawTimeline(player, nr) {
     //tömmer vyn för timeline innan den målas om
-    $(`#timelinecontainer${nr}`).empty(); 
+    $(`#timelinecontainer${nr}`).empty();
     $(`#timelinecontainer${nr}`).css('background-color', 'white');
     let sortedList = player.timeLine.sort();
     let height = heightCalculation(player.timeLine);
@@ -216,8 +216,8 @@ $("body").on("click", ".timelineblock", function () {
             $('#page2').hide();
             $('#page3').show();
             console.log(players[currentPlayer].name)
-                $('#winner').html(`<p>${players[currentPlayer].name} är en riktig vinnare!</p> <p>De andra är skyldig dig ett kinderägg</p>`)
-        } 
+            $('#winner').html(`<p>${players[currentPlayer].name} är en riktig vinnare!</p> <p>De andra är skyldig dig ett kinderägg</p>`)
+        }
         drawTimeline(players[currentPlayer], currentPlayer);
     } else {
         showWrongCard();
@@ -250,7 +250,7 @@ function addYearToList(year) {
     players[currentPlayer].timeLine.push(year);
 }
 
-function checkIfWon(player) { 
+function checkIfWon(player) {
     if (player.timeLine.length >= winLimit) {
         console.log('du har vunnit spelet!');
         return true;
@@ -270,7 +270,7 @@ $('body').on("click", ".answer", function () {
 function showNewCard() {
     $('.card').removeClass('answer');
     $(".cardContent").empty();
-    
+
     let color = cardDeck[0].Color;
     $(".cardContent").css("background-color", color);
     $(".card").css("border-color", color)
@@ -292,20 +292,19 @@ $('#restartbutton').click(function () {
     prepareNewGame();
 })
 
-        $(function () {
-            var handle = $("#custom-handle");
-            $("#slider").slider({
-                value: 2,
-                min: 2,
-                max: 20,
-                step: 1,
-            },
-                {
-                create: function () {
-                    handle.text($(this).slider("value"));
-                },
-                slide: function (event, ui) {
-                    handle.text(ui.value);
-                }
-            });
-        });
+//winlimit slider
+$("#slider").slider({
+    value: 2,
+    min: 2,
+    max: 20,
+    step: 1,
+},
+    {
+        create: function () {
+            $("#custom-handle").text($(this).slider("value"));
+        },
+        slide: function (event, ui) {
+            $("#custom-handle").text(ui.value);
+        }
+    });
+
