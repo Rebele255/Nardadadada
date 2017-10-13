@@ -162,3 +162,28 @@
     color: white;
 }
 
+#winlimitContainer {
+    height: 700px;
+    width: 700px;
+    background-color: lightcoral;
+    margin: 0 auto;
+}
+
+.settingsContainer {
+    height: 90vh;
+    width: 100vw;
+}
+
+#custom-handle {
+    width: 3em; /*bredd på reglageknappen*/
+    height: 1.6em; /*höjd på reglageknappen*/
+    top: 50%; /*var på reglageknappen sitter i förhållande till reglagelinjen*/
+    margin-top: -.8em;
+    text-align: center; /*var siffran står i reglageknappen horisontellt sett*/
+    line-height: 1.6em; /*var siffran står i reglageknappen vertikalt sett (kan hamna utanför)*/
+}
+
+#custom-handle:active {
+    background-color: white;
+    color: black;
+}
