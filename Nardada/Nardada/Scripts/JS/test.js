@@ -1,6 +1,6 @@
 ﻿var cardDeck;
 //skall senare regleras av spelarna i settings vid början av spelet
-var winLimit = 3;
+var winLimit = 2;
 //var player1 = [];
 //var player1 = { name: "", timeLine: [], color: "", number: 0 };
 //var player2 = [];
@@ -156,8 +156,8 @@ function getCardDeckFromDB() {
 }
 function createCardDisplay() {
     $('#playingfield').append(`<div class="display">
-            <div class="ful">
-            <button id="lockbutton" style="visibility: hidden;">Lås in årtal</button>
+            <div class="ful" style="position: relative">
+            <button id="lockbutton" class="myButton" style="visibility: hidden;">Lås in årtal</button>
             </div>
             <div class="card">
                 <div id="logoName">Nardada</div>
@@ -173,7 +173,7 @@ function createDisplay(player) {
             <div class=\"arrowcontainer\">
             <div class=\"arrow\" style=\"border-top-color: ${player.color}\"/>
             </div>
-            <div class=\"todayfooter\">${player.name}</div></div>`) /*{player.name }</div >*/
+            <div class=\"todayfooter\"style=\"border-top-color: ${player.color}>${player.name} </div></div>`) /*{player.name }</div >*/
     //$(`#arrow${nr}`).css('border-top-color', `${player.color}`);
     drawTimeline(player, player.number);
 

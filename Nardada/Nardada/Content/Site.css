@@ -78,6 +78,7 @@ textarea {
     text-transform: uppercase;
     text-align: center;
     font-weight: bold;
+    background-color: grey;
 }
 .arrowcontainer{
     background-color: white;
