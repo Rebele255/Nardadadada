@@ -24,7 +24,7 @@ $('#startButton').click(function () {
     //player2.name = $('#textplayer2').val();
     //player1.color = $('#playercolor1').val();
     //player2.color = $('#playercolor2').val();
-    winLimit = 2;
+    //winLimit = 2;
     console.log($("#custom-handle").slider())
     console.log($("#slider").val())
     console.log($("#custom-handle[0]"))
@@ -312,9 +312,9 @@ $("#slider").slider({
         },
         slide: function (event, ui) {
             $("#custom-handle").text(ui.value);
-            //console.log(ui.value)
-            console.log($(this).slider("value", ui.value))
-            winLimit = $("#custom-handle").val(ui.value);
+            console.log(ui.value)
+            //console.log($(this).slider("value"))
+            winLimit = ui.value;
                 //$("#slider").slider("value")
         }
     });
